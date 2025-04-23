@@ -1,7 +1,7 @@
 import { Application, Context } from "https://deno.land/x/oak/mod.ts";
 
 // Reemplaza con tu API Key de API-FOOTBALL
-const API_KEY = "66bf2479f5655f5315e02a2ac1e05b9e";  
+const API_KEY = "83cfc25867a7236127ff4f5b1ba10ffa";  
 const LEAGUE_ID = 140; // 140 = Serie A (Italia) - Cambiar según la liga
 const SEASON = 2023; // Temporada 2023
 const FROM_DATE = "2023-01-01"; // Fecha de inicio de la temporada
