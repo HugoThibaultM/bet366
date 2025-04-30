@@ -4,8 +4,10 @@
 
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
+import * as $api_apostar from "./routes/api/apostar.ts";
 import * as $api_login from "./routes/api/login.ts";
 import * as $api_register from "./routes/api/register.ts";
+import * as $apuestas from "./routes/apuestas.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $login from "./routes/login.tsx";
 import * as $main from "./routes/main.tsx";
@@ -18,8 +20,10 @@ const manifest = {
   routes: {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
+    "./routes/api/apostar.ts": $api_apostar,
     "./routes/api/login.ts": $api_login,
     "./routes/api/register.ts": $api_register,
+    "./routes/apuestas.tsx": $apuestas,
     "./routes/index.tsx": $index,
     "./routes/login.tsx": $login,
     "./routes/main.tsx": $main,

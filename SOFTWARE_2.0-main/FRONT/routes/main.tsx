@@ -1,6 +1,8 @@
 // routes/api/main.tsx
 import "https://deno.land/std@0.216.0/dotenv/load.ts";
 import { Handlers, PageProps } from "$fresh/server.ts";
+import { useState } from "preact/hooks";
+
 
 // Función para generar cuotas aleatorias
 function generateRandomOdds(): { home: string; away: string; draw: string } {
@@ -71,11 +73,25 @@ export const handler: Handlers = {
 // Componente principal para renderizar los partidos
 export default function Main({ data }: PageProps<Partido[]>) {
   const porFecha: Record<string, Partido[]> = {};
+
   data.forEach((p) => {
     if (!porFecha[p.fecha]) porFecha[p.fecha] = [];
     porFecha[p.fecha].push(p);
   });
+  const [selecciones, setSelecciones] = useState<
+  { index: number; partido: Partido; seleccion: "home" | "draw" | "away" }[]>([]);
 
+  function handleSeleccion(
+    index: number,
+    partido: Partido,
+    seleccion: "home" | "draw" | "away"
+  ) {
+    setSelecciones((prev) => {
+      const sinEste = prev.filter((sel) => sel.index !== index);
+      return [...sinEste, { index, partido, seleccion }];
+    });
+  }
+  
   return (
     <div className="page matches">
       <h1 className="selector">Partidos de la Jornada</h1>
@@ -92,17 +108,21 @@ export default function Main({ data }: PageProps<Partido[]>) {
                 <span className="match-time">{partido.hora}</span>
               </div>
               <div className="odds">
-                <span>{partido.cuotas.home}</span>
-                <span>{partido.cuotas.draw}</span>
-                <span>{partido.cuotas.away}</span>
+                Home
+              <button type="button">{partido.cuotas.home}</button>
+                Draw
+              <button type="button">{partido.cuotas.draw}</button>
+                Away
+              <button type="button">{partido.cuotas.away}</button>
               </div>
             </div>
+            
           ))}
         </div>
       ))}
 
       <footer className="footer">
-        <p>© 2025 Todos los derechos reservados</p>
+        <p>Ingenieria del Software</p>
       </footer>
     </div>
   );
