@@ -1,8 +1,5 @@
-// routes/api/main.tsx
 import "https://deno.land/std@0.216.0/dotenv/load.ts";
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { useState } from "preact/hooks";
-
 
 // Función para generar cuotas aleatorias
 function generateRandomOdds(): { home: string; away: string; draw: string } {
@@ -43,7 +40,6 @@ export const handler: Handlers = {
     );
 
     const json = await res.json();
-    console.log(JSON.stringify(json, null, 2));
 
     const partidos: Partido[] = json.response.map((fixture: any) => {
       const fechaObj = new Date(fixture.fixture.date);
@@ -70,7 +66,6 @@ export const handler: Handlers = {
   },
 };
 
-// Componente principal para renderizar los partidos
 export default function Main({ data }: PageProps<Partido[]>) {
   const porFecha: Record<string, Partido[]> = {};
 
@@ -78,20 +73,7 @@ export default function Main({ data }: PageProps<Partido[]>) {
     if (!porFecha[p.fecha]) porFecha[p.fecha] = [];
     porFecha[p.fecha].push(p);
   });
-  const [selecciones, setSelecciones] = useState<
-  { index: number; partido: Partido; seleccion: "home" | "draw" | "away" }[]>([]);
 
-  function handleSeleccion(
-    index: number,
-    partido: Partido,
-    seleccion: "home" | "draw" | "away"
-  ) {
-    setSelecciones((prev) => {
-      const sinEste = prev.filter((sel) => sel.index !== index);
-      return [...sinEste, { index, partido, seleccion }];
-    });
-  }
-  
   return (
     <div className="page matches">
       <h1 className="selector">Partidos de la Jornada</h1>
@@ -109,20 +91,31 @@ export default function Main({ data }: PageProps<Partido[]>) {
               </div>
               <div className="odds">
                 Home
-              <button type="button">{partido.cuotas.home}</button>
+                <a
+                  href={`/apuesta?local=${encodeURIComponent(partido.equipoLocal)}&visitante=${encodeURIComponent(partido.equipoVisitante)}&fecha=${encodeURIComponent(partido.fecha)}&hora=${encodeURIComponent(partido.hora)}&seleccion=home&cuota=${partido.cuotas.home}`}
+                >
+                  <button type="button">{partido.cuotas.home}</button>
+                </a>
                 Draw
-              <button type="button">{partido.cuotas.draw}</button>
+                <a
+                  href={`/apuesta?local=${encodeURIComponent(partido.equipoLocal)}&visitante=${encodeURIComponent(partido.equipoVisitante)}&fecha=${encodeURIComponent(partido.fecha)}&hora=${encodeURIComponent(partido.hora)}&seleccion=draw&cuota=${partido.cuotas.draw}`}
+                >
+                  <button type="button">{partido.cuotas.draw}</button>
+                </a>
                 Away
-              <button type="button">{partido.cuotas.away}</button>
+                <a
+                  href={`/apuesta?local=${encodeURIComponent(partido.equipoLocal)}&visitante=${encodeURIComponent(partido.equipoVisitante)}&fecha=${encodeURIComponent(partido.fecha)}&hora=${encodeURIComponent(partido.hora)}&seleccion=away&cuota=${partido.cuotas.away}`}
+                >
+                  <button type="button">{partido.cuotas.away}</button>
+                </a>
               </div>
             </div>
-            
           ))}
         </div>
       ))}
 
       <footer className="footer">
-        <p>Ingenieria del Software</p>
+        <p>Ingeniería del Software</p>
       </footer>
     </div>
   );
